@@ -8,7 +8,8 @@ mkdir grading-area
 git clone $1 student-submission
 echo 'Finished cloning'
 
-if [[ -f student-submission/ListExamples.java ]] then
+if [[ -f student-submission/ListExamples.java ]]
+then
     cp -r student-submission/ListExamples.java grading-area
     cp -r lib grading-area
     cp -r TestListExamples.java grading-area
@@ -19,8 +20,16 @@ fi
 
 cd grading-area
 javac -cp ".;lib/hamcrest-core-1.3.jar;lib/junit-4.13.2.jar" *.java
-java -cp ".;lib/junit-4.13.2.jar;lib/hamcrest-core-1.3.jar" org.junit.runner.JUnitCore TestListExamples
-
+java -cp ".;lib/junit-4.13.2.jar;lib/hamcrest-core-1.3.jar" org.junit.runner.JUnitCore TestListExamples > results.txt
+grep 'Tests run:' results.txt > score.txt
+temp=$(cat "score.txt")
+num=${temp:11:1}
+if [[ temp.length == 0 ]]
+then 
+    echo "Full Score!"
+else
+    echo $((1-num))"/1"
+fi
 # Draw a picture/take notes on the directory structure that's set up after
 # getting to this point
 
